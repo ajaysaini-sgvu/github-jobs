@@ -66,4 +66,3 @@ general:
     only:
      - master # list of branches to build
      - develop
-     - setup-ci
