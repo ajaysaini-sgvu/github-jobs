@@ -17,6 +17,7 @@ update_sdk: &update_sdk
     echo "84831b9409646a918e30573bab4c9c91346d8abd" > "$ANDROID_HOME/licenses/android-sdk-preview-license"
     sdkmanager "platform-tools" "platforms;android-27"
 
+
 jobs:
   build:
     <<: *defaults
@@ -60,6 +61,24 @@ jobs:
           paths:
             - build
             - app/build
+
+dependencies:
+  pre:
+    - sudo pip install -U crcmod
+  post:
+    - ./gradlew :app:assembleDebug -PdisablePreDex
+    - ./gradlew :app:assembleDebugTest -PdisablePreDex
+    - echo $GCLOUD_SERVICE_KEY | base64 --decode > ${HOME}/client-secret.json
+    - sudo /opt/google-cloud-sdk/bin/gcloud config set project dazzling-fire-5515
+    - sudo /opt/google-cloud-sdk/bin/gcloud --quiet components update
+    - sudo /opt/google-cloud-sdk/bin/gcloud --quiet components install beta
+    - sudo /opt/google-cloud-sdk/bin/gcloud auth activate-service-account firebase-circleci@dazzling-fire-5515.iam.gserviceaccount.com --key-file ${HOME}/client-secret.json
+
+test:
+  override:
+    - echo "y" | sudo /opt/google-cloud-sdk/bin/gcloud beta firebase test android run --app app/build/outputs/apk/app-debug.apk --test app/build/outputs/apk/app-debug-test-unaligned.apk --results-bucket cloud-test-dazzling-fire-5515
+  post:
+    - sudo /opt/google-cloud-sdk/bin/gsutil -m cp -r -U `sudo /opt/google-cloud-sdk/bin/gsutil ls gs://cloud-test-circle-ctl-test | tail -1` $CIRCLE_ARTIFACTS/ | true
 
 general:
   branches:
