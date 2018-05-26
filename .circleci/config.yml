@@ -9,6 +9,13 @@ defaults: &defaults
       GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2 -Dkotlin.incremental=false"
       TERM: dumb
 
+gcloud_config: &gcloud_config
+  working_directory: ~/github-jobs
+  docker:
+    - image: google/cloud-sdk:latest
+  environment:
+    TERM: dumb
+
 update_sdk: &update_sdk
   name: Update SDK
   command: |
@@ -16,7 +23,6 @@ update_sdk: &update_sdk
     echo "d56f5187479451eabf01fb78af6dfcb131a6481e" > "$ANDROID_HOME/licenses/android-sdk-license"
     echo "84831b9409646a918e30573bab4c9c91346d8abd" > "$ANDROID_HOME/licenses/android-sdk-preview-license"
     sdkmanager "platform-tools" "platforms;android-27"
-
 
 jobs:
   build:
@@ -62,23 +68,40 @@ jobs:
             - build
             - app/build
 
-dependencies:
-  pre:
-    - sudo pip install -U crcmod
-  post:
-    - ./gradlew :app:assembleDebug -PdisablePreDex
-    - ./gradlew :app:assembleDebugTest -PdisablePreDex
-    - echo $GCLOUD_SERVICE_KEY | base64 --decode > ${HOME}/client-secret.json
-    - sudo /opt/google-cloud-sdk/bin/gcloud config set project dazzling-fire-5515
-    - sudo /opt/google-cloud-sdk/bin/gcloud --quiet components update
-    - sudo /opt/google-cloud-sdk/bin/gcloud --quiet components install beta
-    - sudo /opt/google-cloud-sdk/bin/gcloud auth activate-service-account firebase-circleci@dazzling-fire-5515.iam.gserviceaccount.com --key-file ${HOME}/client-secret.json
+# Google Cloud Service
 
-test:
-  override:
-    - echo "y" | sudo /opt/google-cloud-sdk/bin/gcloud beta firebase test android run --app app/build/outputs/apk/app-debug.apk --test app/build/outputs/apk/app-debug-test-unaligned.apk --results-bucket cloud-test-dazzling-fire-5515
-  post:
-    - sudo /opt/google-cloud-sdk/bin/gsutil -m cp -r -U `sudo /opt/google-cloud-sdk/bin/gsutil ls gs://cloud-test-circle-ctl-test | tail -1` $CIRCLE_ARTIFACTS/ | true
+export_gcloud_key: &export_gcloud_key
+  run:
+    name: Export Google Cloud Service key environment variable
+    command: echo 'export GCLOUD_SERVICE_KEY="$GCLOUD_SERVICE_KEY"' >> $BASH_ENV
+decode_gcloud_key: &decode_gcloud_key
+  run:
+    name: Decode Google Cloud credentials
+    command: echo $GCLOUD_SERVICE_KEY | base64 -di > ${HOME}/client-secret.json
+
+test_instrumented:
+  <<: *gcloud_config
+  steps:
+    - *export_gcloud_key
+    - *decode_gcloud_key
+    - run:
+        name: Set Google Cloud target project
+        command: gcloud config set project dazzling-fire-5515
+    - run:
+        name: Authenticate with Google Cloud
+        command: gcloud auth activate-service-account firebase-circleci@dazzling-fire-5515.iam.gserviceaccount.com --key-file ${HOME}/client-secret.json
+    - run:
+        name: Run instrumented test on Firebase Test Lab
+        command: gcloud firebase test android run --type instrumentation --app app/build/outputs/apk/debug/app-debug.apk --test app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk --device model=Nexus5X,version=26,locale=en_US,orientation=portrait --environment-variables coverage=true,coverageFile=/sdcard/tmp/code-coverage/connected/coverage.ec --directories-to-pull=/sdcard/tmp --timeout 20m
+    - run:
+        name: Create directory to store test results
+        command: mkdir firebase
+    - run:
+        name: Download instrumented test results from Firebase Test Lab
+        command: gsutil -m cp -r -U "`gsutil ls gs://test-lab-3udbiqpdyp0d0-miwcp7d69v80m | tail -1`*" /root/workspace/firebase/
+    - store_artifacts:
+        path: firebase/
+        destination: /firebase/
 
 general:
   branches:
