@@ -99,6 +99,10 @@ test_instrumented:
     - run:
         name: Download instrumented test results from Firebase Test Lab
         command: gsutil -m cp -r -U "`gsutil ls gs://test-lab-3udbiqpdyp0d0-miwcp7d69v80m | tail -1`*" /root/workspace/firebase/
+    - persist_to_workspace:
+        root: .
+        paths:
+          - firebase
     - store_artifacts:
         path: firebase/
         destination: /firebase/
