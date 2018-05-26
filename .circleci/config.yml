@@ -42,7 +42,7 @@ jobs:
       - run:
           name: Assemble APKs
           command: ./gradlew assemble --no-daemon
-     - save_cache:
+      - save_cache:
           paths:
             - ~/.gradle/caches
             - ~/.gradle/wrapper
