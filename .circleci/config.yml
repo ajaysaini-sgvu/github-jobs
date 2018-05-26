@@ -32,7 +32,7 @@ jobs:
           <<: *update_sdk
       - checkout
       - restore_cache:
-          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}-{{ checksum  "base/build.gradle" }}-{{ checksum  "instantapp/build.gradle" }}-{{ checksum  "main/build.gradle" }}-{{ checksum  "tv/build.gradle" }}
+          key: jars-{{ checksum "build.gradle.kts" }}-{{ checksum  "app/build.gradle.kts" }}-{{ checksum  "base/build.gradle.kts" }}-{{ checksum  "instantapp/build.gradle" }}-{{ checksum  "main/build.gradle.kts" }}-{{ checksum  "tv/build.gradle.kts" }}
       - run:
           name: chmod permissions
           command: chmod +x ./gradlew
@@ -42,7 +42,7 @@ jobs:
       - save_cache:
           paths:
             - ~/.gradle
-          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}-{{ checksum  "base/build.gradle" }}-{{ checksum  "instantapp/build.gradle" }}-{{ checksum  "main/build.gradle" }}-{{ checksum  "tv/build.gradle" }}
+          key: jars-{{ checksum "build.gradle.kts" }}-{{ checksum  "app/build.gradle.kts" }}-{{ checksum  "base/build.gradle.kts" }}-{{ checksum  "instantapp/build.gradle.kts" }}-{{ checksum  "main/build.gradle.kts" }}-{{ checksum  "tv/build.gradle.kts" }}
       - run:
           name: Assemble APKs
           command: ./gradlew assemble --no-daemon
@@ -50,7 +50,7 @@ jobs:
           paths:
             - ~/.gradle/caches
             - ~/.gradle/wrapper
-          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
+          key: jars-{{ checksum "build.gradle.kts" }}-{{ checksum  "app/build.gradle.kts" }}
       - store_artifacts:
           path: app/build/outputs/apk
           destination: apks
