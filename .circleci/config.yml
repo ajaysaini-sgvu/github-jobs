@@ -9,6 +9,13 @@ defaults: &defaults
       GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2 -Dkotlin.incremental=false"
       TERM: dumb
 
+gcloud_config: &gcloud_config
+  working_directory: ~/github-jobs
+  docker:
+    - image: google/cloud-sdk:latest
+  environment:
+    TERM: dumb
+
 update_sdk: &update_sdk
   name: Update SDK
   command: |
@@ -25,17 +32,13 @@ jobs:
           <<: *update_sdk
       - checkout
       - restore_cache:
-          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}-{{ checksum  "base/build.gradle" }}-{{ checksum  "instantapp/build.gradle" }}-{{ checksum  "main/build.gradle" }}-{{ checksum  "tv/build.gradle" }}
+          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
       - run:
           name: chmod permissions
           command: chmod +x ./gradlew
       - run:
           name: Download Dependencies
           command: ./gradlew dependencies --no-daemon
-      - save_cache:
-          paths:
-            - ~/.gradle
-          key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}-{{ checksum  "base/build.gradle" }}-{{ checksum  "instantapp/build.gradle" }}-{{ checksum  "main/build.gradle" }}-{{ checksum  "tv/build.gradle" }}
       - run:
           name: Assemble APKs
           command: ./gradlew assemble --no-daemon
@@ -60,6 +63,45 @@ jobs:
           paths:
             - build
             - app/build
+
+# Google Cloud Service
+
+export_gcloud_key: &export_gcloud_key
+  run:
+    name: Export Google Cloud Service key environment variable
+    command: echo 'export GCLOUD_SERVICE_KEY="$GCLOUD_SERVICE_KEY"' >> $BASH_ENV
+decode_gcloud_key: &decode_gcloud_key
+  run:
+    name: Decode Google Cloud credentials
+    command: echo $GCLOUD_SERVICE_KEY | base64 -di > ${HOME}/client-secret.json
+
+test_instrumented:
+  <<: *gcloud_config
+  steps:
+    - *export_gcloud_key
+    - *decode_gcloud_key
+    - run:
+        name: Set Google Cloud target project
+        command: gcloud config set project dazzling-fire-5515
+    - run:
+        name: Authenticate with Google Cloud
+        command: gcloud auth activate-service-account firebase-circleci@dazzling-fire-5515.iam.gserviceaccount.com --key-file ${HOME}/client-secret.json
+    - run:
+        name: Run instrumented test on Firebase Test Lab
+        command: gcloud firebase test android run --type instrumentation --app app/build/outputs/apk/debug/app-debug.apk --test app/build/outputs/apk/androidTest/debug/app-debug-androidTest.apk --device model=Nexus5X,version=26,locale=en_US,orientation=portrait --environment-variables coverage=true,coverageFile=/sdcard/tmp/code-coverage/connected/coverage.ec --directories-to-pull=/sdcard/tmp --timeout 20m
+    - run:
+        name: Create directory to store test results
+        command: mkdir firebase
+    - run:
+        name: Download instrumented test results from Firebase Test Lab
+        command: gsutil -m cp -r -U "`gsutil ls gs://test-lab-3udbiqpdyp0d0-miwcp7d69v80m | tail -1`*" /root/workspace/firebase/
+    - persist_to_workspace:
+        root: .
+        paths:
+          - firebase
+    - store_artifacts:
+        path: firebase/
+        destination: /firebase/
 
 general:
   branches:
