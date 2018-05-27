@@ -11,7 +11,7 @@ import javax.inject.Inject
 import dagger.android.HasActivityInjector
 
 
-class MvvmApp : Application(), HasActivityInjector {
+class GitHubJobsApp : Application(), HasActivityInjector {
 
     @Inject
     internal var activityDispatchingAndroidInjector: DispatchingAndroidInjector<Activity>? = null
