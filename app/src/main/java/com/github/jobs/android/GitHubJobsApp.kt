@@ -16,9 +16,6 @@ class GitHubJobsApp : Application(), HasActivityInjector {
     @Inject
     internal var activityDispatchingAndroidInjector: DispatchingAndroidInjector<Activity>? = null
 
-    @Inject
-    internal var mCalligraphyConfig: CalligraphyConfig? = null
-
     override fun activityInjector(): DispatchingAndroidInjector<Activity>? {
         return activityDispatchingAndroidInjector
     }
@@ -38,6 +35,5 @@ class GitHubJobsApp : Application(), HasActivityInjector {
             AndroidNetworking.enableLogging(HttpLoggingInterceptor.Level.BODY)
         }
 
-        CalligraphyConfig.initDefault(mCalligraphyConfig)
     }
 }
