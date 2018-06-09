@@ -4,11 +4,11 @@ object AppConstants {
 
     val API_STATUS_CODE_LOCAL_ERROR = 0
 
-    val DB_NAME = "mindorks_mvvm.db"
+    val DB_NAME = "github_jobs.db"
 
     val NULL_INDEX = -1L
 
-    val PREF_NAME = "mindorks_pref"
+    val PREF_NAME = "github_jobs_pref"
 
     val SEED_DATABASE_OPTIONS = "seed/options.json"
 
