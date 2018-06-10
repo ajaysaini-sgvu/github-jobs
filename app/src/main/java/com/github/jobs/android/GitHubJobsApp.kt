@@ -1,6 +1,5 @@
 package com.github.jobs.android
 
-import uk.co.chrisjenx.calligraphy.CalligraphyConfig
 import com.androidnetworking.interceptors.HttpLoggingInterceptor
 import com.androidnetworking.AndroidNetworking
 import com.github.jobs.android.utils.AppLogger

@@ -19,6 +19,10 @@ class JobsListActivity : BaseActivity<ActivityJobsListBinding, JobsListViewModel
 
     private var activityJobsListBinding: ActivityJobsListBinding? = null
 
+    override fun handleError(throwable: Throwable) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activityJobsListBinding = viewDataBinding
