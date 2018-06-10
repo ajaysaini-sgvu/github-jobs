@@ -19,6 +19,7 @@ class JobsListViewModel(dataManager: DataManager, schedulerProvider: SchedulerPr
                     }
                     override fun onError(any: Any) {
                         setIsLoading(false)
+                        navigator.handleError(any)
                     }
                 }))
     }

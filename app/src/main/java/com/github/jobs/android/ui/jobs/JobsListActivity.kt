@@ -23,7 +23,7 @@ class JobsListActivity : BaseActivity<ActivityJobsListBinding, JobsListViewModel
 
     private var activityJobsListBinding: ActivityJobsListBinding? = null
 
-    override fun handleError(throwable: Throwable) {
+    override fun handleError(any: Any) {
         // handle errors
     }
 
