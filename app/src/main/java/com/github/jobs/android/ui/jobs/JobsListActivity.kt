@@ -30,5 +30,7 @@ class JobsListActivity : BaseActivity<ActivityJobsListBinding, JobsListViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         activityJobsListBinding = viewDataBinding
+
+        jobsListViewModel.jobs()
     }
 }

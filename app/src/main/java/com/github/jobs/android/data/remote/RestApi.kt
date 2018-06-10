@@ -16,4 +16,12 @@
 
 package com.github.jobs.android.data.remote
 
-interface RestApi
+import com.github.jobs.android.data.model.api.jobs.JobsResponse
+import io.reactivex.Observable
+import retrofit2.http.GET
+
+interface RestApi {
+
+    @GET(ApiEndPoint.ENDPOINT_GITHUB_JOBS)
+    fun getJobsApiCall(): Observable<List<JobsResponse>>
+}

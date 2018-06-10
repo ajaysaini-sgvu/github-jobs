@@ -52,12 +52,11 @@
             android:layout_height="60dp"
             android:layout_marginBottom="16dp"
             android:layout_marginTop="16dp"
-            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/activity_jobs_list"
             app:layout_constraintLeft_toLeftOf="@+id/activity_jobs_list"
             app:layout_constraintRight_toRightOf="@+id/activity_jobs_list"
             app:layout_constraintTop_toBottomOf="@+id/toolbar"
-            tools:visibility="visible" />
+            android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.GONE}" />
 
     </android.support.constraint.ConstraintLayout>
 </layout>

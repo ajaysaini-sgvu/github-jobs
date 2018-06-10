@@ -4,6 +4,7 @@ import dagger.Module
 import com.github.jobs.android.utils.rx.SchedulerProvider
 import com.github.jobs.android.data.DataManager
 import dagger.Provides
+import io.reactivex.disposables.CompositeDisposable
 
 @Module
 class JobsListActivityModule {
