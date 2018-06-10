@@ -1,16 +1,16 @@
 package com.github.jobs.android.ui.base
 
-import android.app.Dialog;
-import android.content.Context;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.FragmentManager;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.widget.RelativeLayout;
+import android.app.Dialog
+import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.os.Bundle
+import android.support.annotation.NonNull
+import android.support.v4.app.DialogFragment
+import android.support.v4.app.FragmentManager
+import android.view.ViewGroup
+import android.view.Window
+import android.widget.RelativeLayout
 
 
 abstract class BaseDialog : DialogFragment() {
@@ -24,7 +24,7 @@ abstract class BaseDialog : DialogFragment() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         if (context is BaseActivity<*, *>) {
-            val mActivity = context as BaseActivity<*, *>
+            val mActivity = context
             this.baseActivity = mActivity
             mActivity.onFragmentAttached()
         }
@@ -33,18 +33,18 @@ abstract class BaseDialog : DialogFragment() {
     @NonNull
     override fun onCreateDialog(savedInstanceState: Bundle): Dialog {
         // the content
-        val root = RelativeLayout(getActivity())
+        val root = RelativeLayout(activity)
         root.layoutParams = ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT)
 
         // creating the fullscreen dialog
-        val dialog = Dialog(getContext())
+        val dialog = Dialog(context)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setContentView(root)
-        if (dialog.getWindow() != null) {
-            dialog.getWindow().setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            dialog.getWindow().setLayout(
+        if (dialog.window != null) {
+            dialog.window.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            dialog.window.setLayout(
                     ViewGroup.LayoutParams.MATCH_PARENT,
                     ViewGroup.LayoutParams.WRAP_CONTENT)
         }

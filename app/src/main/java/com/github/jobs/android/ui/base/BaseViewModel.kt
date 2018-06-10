@@ -4,17 +4,18 @@ import com.github.jobs.android.utils.rx.SchedulerProvider
 import io.reactivex.disposables.CompositeDisposable
 import android.arch.lifecycle.ViewModel
 import java.lang.ref.WeakReference
-import android.databinding.ObservableBoolean;
+import android.databinding.ObservableBoolean
 import com.github.jobs.android.data.DataManager
 
 abstract class BaseViewModel<N>(val dataManager: DataManager,
-                                val schedulerProvider: SchedulerProvider) : ViewModel() {
+                                val schedulerProvider: SchedulerProvider
+                                ) : ViewModel() {
 
     val isLoading = ObservableBoolean(false)
 
-    private val compositeDisposable: CompositeDisposable
+    val compositeDisposable: CompositeDisposable
 
-    private var mNavigator: WeakReference<N>? = null
+    var mNavigator: WeakReference<N>? = null
 
     var navigator: N
         get() = mNavigator!!.get()!!

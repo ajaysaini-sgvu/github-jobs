@@ -13,6 +13,7 @@ import com.github.jobs.android.data.AppDataManager
 import com.github.jobs.android.data.DataManager
 import android.content.Context
 import com.github.jobs.android.data.remote.ApiHelper
+import com.github.jobs.android.data.remote.ApiHelperImpl
 import dagger.Module
 
 @Module
@@ -20,36 +21,24 @@ class AppModule {
 
     @Provides
     @Singleton
-    internal fun provideApiHelper(appApiHelper: ApiHelper): ApiHelper {
-        return appApiHelper
-    }
+    fun provideApiHelper(apiHelperImpl: ApiHelperImpl): ApiHelper = apiHelperImpl
 
     @Provides
     @Singleton
-    internal fun provideContext(application: Application): Context {
-        return application
-    }
+    internal fun provideContext(application: Application): Context = application
 
     @Provides
     @Singleton
-    internal fun provideDataManager(appDataManager: AppDataManager): DataManager {
-        return appDataManager
-    }
+    internal fun provideDataManager(appDataManager: AppDataManager): DataManager = appDataManager
 
     @Provides
     @Singleton
-    internal fun provideGson(): Gson {
-        return GsonBuilder().excludeFieldsWithoutExposeAnnotation().create()
-    }
+    internal fun provideGson(): Gson = GsonBuilder().excludeFieldsWithoutExposeAnnotation().create()
 
     @Provides
     @Singleton
-    internal fun providePreferencesHelper(appPreferencesHelper: AppPreferencesHelper): PreferencesHelper {
-        return appPreferencesHelper
-    }
+    internal fun providePreferencesHelper(appPreferencesHelper: AppPreferencesHelper): PreferencesHelper = appPreferencesHelper
 
     @Provides
-    internal fun provideSchedulerProvider(): SchedulerProvider {
-        return AppSchedulerProvider()
-    }
+    internal fun provideSchedulerProvider(): SchedulerProvider = AppSchedulerProvider()
 }

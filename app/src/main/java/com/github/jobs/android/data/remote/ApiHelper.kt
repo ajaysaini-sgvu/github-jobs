@@ -16,6 +16,9 @@
 
 package com.github.jobs.android.data.remote
 
-interface ApiHelper {
+import com.github.jobs.android.data.model.api.jobs.JobsResponse
+import io.reactivex.Observable
 
+interface ApiHelper {
+    fun getJobsApiCall(): Observable<List<JobsResponse>>
 }

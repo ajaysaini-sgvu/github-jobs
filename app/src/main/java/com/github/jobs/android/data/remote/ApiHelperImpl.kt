@@ -16,8 +16,13 @@
 
 package com.github.jobs.android.data.remote
 
+import com.github.jobs.android.data.model.api.jobs.JobsResponse
+import io.reactivex.Observable
 import javax.inject.Inject
 
 class ApiHelperImpl @Inject constructor(private val restApi: RestApi) : ApiHelper {
 
+    override fun getJobsApiCall(): Observable<List<JobsResponse>> {
+        return restApi.getJobsApiCall()
+    }
 }
