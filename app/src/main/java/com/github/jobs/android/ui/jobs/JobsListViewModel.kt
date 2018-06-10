@@ -1,5 +1,7 @@
 package com.github.jobs.android.ui.jobs
 
-class JobsListViewModel {
+import android.arch.lifecycle.ViewModel
+
+class JobsListViewModel : ViewModel() {
 
 }
