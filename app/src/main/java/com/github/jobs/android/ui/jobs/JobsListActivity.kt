@@ -1,13 +1,26 @@
 package com.github.jobs.android.ui.jobs
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import com.github.jobs.android.BR
 import com.github.jobs.android.R
+import com.github.jobs.android.databinding.ActivityJobsListBinding
+import com.github.jobs.android.ui.base.BaseActivity
 
-class JobsListActivity : AppCompatActivity() {
+class JobsListActivity : BaseActivity<ActivityJobsListBinding, JobsListViewModel>(), JobsListNavigator {
+
+    override val bindingVariable: Int
+        get() = BR.viewModel
+
+    override val layoutId: Int
+        get() = R.layout.activity_jobs_list
+
+    override val viewModel: JobsListViewModel
+        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
+
+    private var activityJobsListBinding: ActivityJobsListBinding? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_jobs_list)
+        activityJobsListBinding = viewDataBinding
     }
 }

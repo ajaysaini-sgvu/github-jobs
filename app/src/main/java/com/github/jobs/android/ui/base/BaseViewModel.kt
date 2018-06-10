@@ -10,9 +10,9 @@ import com.github.jobs.android.data.DataManager
 abstract class BaseViewModel<N>(val dataManager: DataManager,
                                 val schedulerProvider: SchedulerProvider) : ViewModel() {
 
-    val isLoading = ObservableBoolean(false)
+    private val isLoading = ObservableBoolean(false)
 
-    private val compositeDisposable: CompositeDisposable
+    private val compositeDisposable: CompositeDisposable = CompositeDisposable()
 
     private var mNavigator: WeakReference<N>? = null
 
@@ -21,10 +21,6 @@ abstract class BaseViewModel<N>(val dataManager: DataManager,
         set(navigator) {
             this.mNavigator = WeakReference(navigator)
         }
-
-    init {
-        this.compositeDisposable = CompositeDisposable()
-    }
 
     override fun onCleared() {
         compositeDisposable.dispose()
