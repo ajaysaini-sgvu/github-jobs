@@ -4,7 +4,7 @@ import android.content.Context
 import com.github.jobs.android.BuildConfig
 import com.github.jobs.android.data.remote.ApiKeyInterceptor
 import com.github.jobs.android.data.remote.RestApi
-import com.squareup.moshi.Moshi
+import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
 import io.reactivex.schedulers.Schedulers
@@ -13,6 +13,7 @@ import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
+import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
 import java.io.File
 import java.util.concurrent.TimeUnit
@@ -30,12 +31,6 @@ class NetworkModule {
         val baseDir = context.cacheDir
         val cacheDir = File(baseDir, "HttpResponseCache")
         return Cache(cacheDir, HTTP_RESPONSE_DISK_CACHE_MAX_SIZE)
-    }
-
-    @Provides
-    @Singleton
-    fun provideMoshiConverterLibrary(moshi: Moshi): MoshiConverterFactory {
-        return MoshiConverterFactory.create(moshi)
     }
 
     @Provides
@@ -73,12 +68,12 @@ class NetworkModule {
     @Singleton
     fun provideRestApiHelper(
             okHttpClient: OkHttpClient,
-            moshiConverterFactory: MoshiConverterFactory,
+            gson: Gson,
             rxJava2CallAdapterFactory: RxJava2CallAdapterFactory): RestApi {
         val builder = Retrofit.Builder()
                 .baseUrl(BuildConfig.BASE_URL)
                 .addCallAdapterFactory(rxJava2CallAdapterFactory)
-                .addConverterFactory(moshiConverterFactory)
+                .addConverterFactory(GsonConverterFactory.create(gson))
         val retrofit = builder.client(okHttpClient).build()
         return retrofit.create(RestApi::class.java)
     }

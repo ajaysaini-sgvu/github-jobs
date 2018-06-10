@@ -7,6 +7,4 @@ import javax.inject.Inject
 
 open class AppDataManager @Inject constructor(private val preferencesHelper: PreferencesHelper,
                                               private val apiHelper: ApiHelper,
-                                              private val context: Context) : DataManager {
-
-}
+                                              private val context: Context) : DataManager

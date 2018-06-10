@@ -4,7 +4,7 @@ import com.github.jobs.android.utils.rx.SchedulerProvider
 import io.reactivex.disposables.CompositeDisposable
 import android.arch.lifecycle.ViewModel
 import java.lang.ref.WeakReference
-import android.databinding.ObservableBoolean;
+import android.databinding.ObservableBoolean
 import com.github.jobs.android.data.DataManager
 
 abstract class BaseViewModel<N>(val dataManager: DataManager,

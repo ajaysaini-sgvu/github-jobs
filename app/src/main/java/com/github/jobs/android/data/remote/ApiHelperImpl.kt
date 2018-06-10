@@ -18,6 +18,4 @@ package com.github.jobs.android.data.remote
 
 import javax.inject.Inject
 
-class ApiHelperImpl @Inject constructor(private val restApi: RestApi) : ApiHelper {
-
-}
+class ApiHelperImpl @Inject constructor(private val restApi: RestApi) : ApiHelper

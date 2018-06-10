@@ -16,6 +16,4 @@
 
 package com.github.jobs.android.data.remote
 
-interface ApiHelper {
-
-}
+interface ApiHelper

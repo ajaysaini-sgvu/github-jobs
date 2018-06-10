@@ -1,22 +1,22 @@
 package com.github.jobs.android.ui.base
 
-import android.annotation.TargetApi;
-import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.pm.PackageManager;
-import android.databinding.DataBindingUtil;
-import android.databinding.ViewDataBinding;
-import android.os.Build;
-import android.os.Bundle;
-import android.support.annotation.LayoutRes;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
-import android.view.inputmethod.InputMethodManager;
+import android.annotation.TargetApi
+import android.app.ProgressDialog
+import android.content.Context
+import android.content.pm.PackageManager
+import android.databinding.DataBindingUtil
+import android.databinding.ViewDataBinding
+import android.os.Build
+import android.os.Bundle
+import android.support.annotation.LayoutRes
+import android.support.annotation.Nullable
+import android.support.v7.app.AppCompatActivity
+import android.view.inputmethod.InputMethodManager
 import com.github.jobs.android.utils.CommonUtils
 import com.github.jobs.android.utils.NetworkUtils
 
-import dagger.android.AndroidInjection;
-import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
+import dagger.android.AndroidInjection
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper
 
 
 abstract class BaseActivity<T : ViewDataBinding, V> : AppCompatActivity(), BaseFragment.Callback {
@@ -61,7 +61,7 @@ abstract class BaseActivity<T : ViewDataBinding, V> : AppCompatActivity(), BaseF
 
     }
 
-    override protected fun attachBaseContext(newBase: Context) {
+    override fun attachBaseContext(newBase: Context) {
         super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase))
     }
 
@@ -81,7 +81,7 @@ abstract class BaseActivity<T : ViewDataBinding, V> : AppCompatActivity(), BaseF
         if (view != null) {
             val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
             if (imm != null) {
-                imm!!.hideSoftInputFromWindow(view.windowToken, 0)
+                imm.hideSoftInputFromWindow(view.windowToken, 0)
             }
         }
     }
