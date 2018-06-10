@@ -10,7 +10,7 @@ import io.reactivex.disposables.CompositeDisposable
 class JobsListActivityModule {
 
     @Provides
-    fun provideJobsListViewModel(dataManager: DataManager, schedulerProvider: SchedulerProvider): JobsListViewModel {
-        return JobsListViewModel(dataManager, schedulerProvider)
+    fun provideJobsListViewModel(): JobsListViewModel {
+        return JobsListViewModel()
     }
 }
