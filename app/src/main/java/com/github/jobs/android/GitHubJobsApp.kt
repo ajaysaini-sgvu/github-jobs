@@ -28,11 +28,5 @@ class GitHubJobsApp : Application(), HasActivityInjector {
 //                .inject(this)
 
         AppLogger.init()
-
-        AndroidNetworking.initialize(getApplicationContext())
-        if (BuildConfig.DEBUG) {
-            AndroidNetworking.enableLogging(HttpLoggingInterceptor.Level.BODY)
-        }
-
     }
 }
