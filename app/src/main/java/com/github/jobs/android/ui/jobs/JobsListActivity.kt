@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import com.github.jobs.android.R
 
+
 class JobsListActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
