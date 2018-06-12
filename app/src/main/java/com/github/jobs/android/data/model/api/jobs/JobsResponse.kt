@@ -1,40 +1,52 @@
 package com.github.jobs.android.data.model.api.jobs
 
 import com.github.jobs.android.data.model.BaseResponse
+import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 
 data class JobsResponse(
 
-	@field:SerializedName("company_logo")
-	val companyLogo: Any?,
+        @SerializedName("company_logo")
+        @Expose
+        val companyLogo: String?,
 
-	@field:SerializedName("how_to_apply")
-	val howToApply: String?,
+        @SerializedName("how_to_apply")
+        @Expose
+        val howToApply: String?,
 
-	@field:SerializedName("created_at")
-	val createdAt: String?,
+        @SerializedName("created_at")
+        @Expose
+        val createdAt: String?,
 
-	@field:SerializedName("description")
-	val description: String?,
+        @SerializedName("description")
+        @Expose
+        val description: String?,
 
-	@field:SerializedName("location")
-	val location: String?,
+        @SerializedName("location")
+        @Expose
+        val location: String?,
 
-	@field:SerializedName("company")
-	val company: String?,
+        @SerializedName("company")
+        @Expose
+        val company: String?,
 
-	@field:SerializedName("company_url")
-	val companyUrl: Any?,
+        @SerializedName("company_url")
+        @Expose
+        val companyUrl: String?,
 
-	@field:SerializedName("id")
-	val id: String?,
+        @SerializedName("id")
+        @Expose
+        val id: String?,
 
-	@field:SerializedName("title")
-	val title: String?,
+        @SerializedName("title")
+        @Expose
+        val title: String?,
 
-	@field:SerializedName("type")
-	val type: String?,
+        @SerializedName("type")
+        @Expose
+        val type: String?,
 
-	@field:SerializedName("url")
-	val url: String?
-): BaseResponse()
+        @SerializedName("url")
+        @Expose
+        val url: String?
+) : BaseResponse()
