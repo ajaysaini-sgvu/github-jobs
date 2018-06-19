@@ -40,8 +40,8 @@ jobs:
           name: Download Dependencies
           command: ./gradlew dependencies --no-daemon
       - run:
-          name: Assemble APKs
-          command: ./gradlew assemble --no-daemon
+          name: Gradle build (debug)
+          command: ./gradlew -PciBuild=true assembleDebug assembleAndroidTest
       - save_cache:
           paths:
             - ~/.gradle/caches
